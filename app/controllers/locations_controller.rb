@@ -104,7 +104,7 @@ class LocationsController < ApplicationController
       uri = URI(url)
       response = Net::HTTP.get(uri)
       output = JSON.parse(response)
-      [output['lat'], output['longt']]
+      [output['latt'], output['longt']]
     end
 
     def forecast
