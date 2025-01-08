@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :locations
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
@@ -10,5 +11,7 @@ Rails.application.routes.draw do
   # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
 
   # Defines the root path route ("/")
-  root "ip_api#index"
+  #root "ip_api#index"
+  get 'ip_api', to: 'ip_api#index'
+  root "locations#index"
 end
