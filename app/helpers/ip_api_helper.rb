@@ -1,0 +1,2 @@
+module IpApiHelper
+end
