@@ -5,9 +5,12 @@
 <% if @highs.present? && @lows.present?%>
   <%= @highs %>
   <%= @lows %>
+  <br>
+  <img src="<%= @chart_url %>" alt="Bar Chart">
 <% else %>
   There was some sort of error
 <% end %>
+
 
 <div>
   <%= link_to "Edit this location", edit_location_path(@location) %> |
