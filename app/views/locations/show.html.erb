@@ -25,9 +25,11 @@
           <div class="text-center mb-4">
             <img src="<%= @chart_url %>" alt="Bar Chart" class="img-fluid rounded shadow-sm">
           </div>
-
-          
-
+        <% else %>
+          <div class= "alert alert-danger text-center">
+            There was an error presenting the report.
+            <%= @lat %>
+          </div>
         <% end %>
         <div class="text-center">
           <%= link_to "Edit Location", edit_location_path(@location), class: "btn btn-primary me-3 mb-3" %>

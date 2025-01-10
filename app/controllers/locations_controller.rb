@@ -12,11 +12,9 @@ class LocationsController < ApplicationController
 
     #Get the longitude and lattitude
     if @location.ip_address.present?
-      puts "ip address present"
       @lat, @lng = get_lat_lng_from_ip
       puts "Lattitude: #{@lat}, Longitude: #{@lng}"
     elsif @location.zipcode.present?
-      puts "zip code is present, #{@location.zipcode}"
       @lat, @lng = get_lat_lng_from_zipcode
       puts "Lattitude: #{@lat}, Longitude: #{@lng}"
     end
@@ -24,37 +22,24 @@ class LocationsController < ApplicationController
     if @lat.present? && @lng.present?
       @highs, @lows = forecast
       puts "Highs: #{@highs} Lows: #{@lows}"
-      highs_data = @highs.join(",")
-      lows_data = @lows.join(",")
+      if @highs.present? && @lows.present?
+        highs_data = @highs.join(",")
+        lows_data = @lows.join(",")
 
+        require 'date'
 
-      
-      #@chart_url = "https://image-charts.com/chart?cht=bvg&chbr=10&chs=700x100&chd=t:#{highs_data}|#{lows_data}&chco=E5446D,60B2E5"
-      #@chart_url = "https://image-charts.com/chart?chbh=20&chbr=10&chco=E5446D%2C60B2E5&chd=t:#{highs_data}|#{lows_data}&chdl=Highs%7CLows&chdlp=r&chg=5&chs=700x300&cht=bvg&chtt=Temperature&chxl=0%3A%7CJan%7CFev%7CMar%7CAvr%7CMay&chxt=x%2Cy"
+        today = Date.today
 
+        @day_names = ["Today"]
 
-      require 'date'
+        (1..6).each do |i|
+          @day_names << (today + i).strftime("%A")
+        end
 
-      # Get today's date
-      today = Date.today
+        day_names_str = @day_names.join('%7C')
 
-      # Array to hold the day names
-      @day_names = ["Today"]
-
-      # Loop to get today and the next 6 days
-      (1..6).each do |i|
-        @day_names << (today + i).strftime("%A")
+        @chart_url = "https://image-charts.com/chart?chbh=20&chbr=10&chco=E5446D%2C60B2E5&chd=t:#{highs_data}|#{lows_data}&chdl=Highs%7CLows&chdlp=r&chg=5&chs=700x300&cht=bvg&chtt=Temperature%20°F&chxl=0%3A%7C#{day_names_str}&chxt=x%2Cy"
       end
-
-      # Join the day names with | for the URL
-      day_names_str = @day_names.join('%7C')
-
-      # Update the @chart_url
-      @chart_url = "https://image-charts.com/chart?chbh=20&chbr=10&chco=E5446D%2C60B2E5&chd=t:#{highs_data}|#{lows_data}&chdl=Highs%7CLows&chdlp=r&chg=5&chs=700x300&cht=bvg&chtt=Temperature%20°F&chxl=0%3A%7C#{day_names_str}&chxt=x%2Cy"
-
-
-
-
     end
   end
 
@@ -118,7 +103,6 @@ class LocationsController < ApplicationController
 
 
     def get_lat_lng_from_ip
-    
       puts "Called IP method, #{@location.ip_address}"
       url = "https://ipapi.co/#{@location.ip_address}/json/"
       uri = URI(url)
@@ -129,7 +113,6 @@ class LocationsController < ApplicationController
   
   
     def get_lat_lng_from_zipcode
-    
       puts "Called Zipcode method, #{@location.zipcode}"
       url = "https://geocode.xyz/#{@location.zipcode}?json=1"
       uri = URI(url)
@@ -139,23 +122,15 @@ class LocationsController < ApplicationController
     end
 
     def forecast
-      
-      if @lat.present? && @lng.present? && valid_lat_lng?(@lat, @lng)
+      if @lat.present? && @lng.present?
         url = "https://api.open-meteo.com/v1/forecast?latitude=#{@lat}&longitude=#{@lng}&daily=temperature_2m_max,temperature_2m_min&temperature_unit=fahrenheit&wind_speed_unit=mph&precipitation_unit=inch"
         uri = URI(url)
         response = Net::HTTP.get(uri)
         report = JSON.parse(response)
-        [report["daily"]["temperature_2m_max"], report["daily"]["temperature_2m_min"]]
-      else
-        # Handle invalid or missing latitude and longitude
-        Rails.logger.warn("Invalid or missing latitude/longitude: lat=#{@lat}, lng=#{@lng}")
-      end
-      
-    end
-
-    def valid_lat_lng?(lat, lng)
-      puts "#{lat}"
-      lat.to_f.between?(-90, 90) && lng.to_f.between?(-180, 180)
-    end
-    
+        if report["daily"].present?
+          puts @lat
+          [report["daily"]["temperature_2m_max"], report["daily"]["temperature_2m_min"]]
+        end
+      end   
+    end   
 end
