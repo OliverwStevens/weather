@@ -1,16 +1,28 @@
-<p style="color: green"><%= notice %></p>
+<% if notice %>
+  <div class="alert alert-success text-center">
+    <%= notice %>
+  </div>
+<% end %>
 
 <% content_for :title, "Locations" %>
 
-<h1>Locations</h1>
+<div class="text-center">
+  <h1 class="display-8 mb-4">Locations</h1>
 
-<div id="locations">
-  <% @locations.each do |location| %>
-    <%= render location %>
-    <p>
-      <%= link_to "Show this location", location %>
-    </p>
-  <% end %>
+  <div id="locations">
+    <% @locations.each do |location| %>
+      <div class="p-4 mb-4 bg-secondary text-white rounded-3 shadow mx-auto" style="max-width: 400px;">
+        <div class="container-fluid">
+          <%= render location %>
+          <div class="mt-3">
+            <%= link_to "View Location", location, class: "btn btn-light btn-sm text-dark fw-bold" %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="mt-4">
+    <%= link_to "New Location", new_location_path, class: "btn btn-success btn-lg fw-bold" %>
+  </div>
 </div>
-
-<%= link_to "New location", new_location_path %>

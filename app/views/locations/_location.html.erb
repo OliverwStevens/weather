@@ -1,17 +1,19 @@
-<div id="<%= dom_id location %>" class="col-md-8 fs-4 text-dark">
+<div id="<%= dom_id location %>" class="fs-4 text-dark">
 
-  <% if location.zipcode.present? %>
-    <p>
-      <strong>Zipcode:</strong>
-      <%= location.zipcode %>
-    </p>
-  <% end %>
+  <div class= "text-center">
+    <% if location.zipcode.present? %>
+      <p>
+        <strong>Zipcode:</strong>
+        <%= location.zipcode %>
+      </p>
+    <% end %>
 
-  <% if location.ip_address.present? %>
-    <p>
-      <strong>IP address:</strong>
-      <%= location.ip_address %>
-    </p>
-  <% end %>
+    <% if location.ip_address.present? %>
+      <p>
+        <strong>IP address:</strong>
+        <%= location.ip_address %>
+      </p>
+    <% end %>
+  </div>
 
 </div>

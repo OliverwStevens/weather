@@ -1,11 +1,11 @@
 <% content_for :title, "New location" %>
 
-<h1>New location</h1>
+<div class="text-center">
+  <%= render "form", location: @location %>
 
-<%= render "form", location: @location %>
+  <br>
 
-<br>
-
-<div>
-  <%= link_to "Back to locations", locations_path %>
+  <div>
+    <%= link_to "Back to locations", locations_path, class: "btn btn-primary" %>
+  </div>
 </div>

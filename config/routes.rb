@@ -12,6 +12,5 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   #root "ip_api#index"
-  get 'ip_api', to: 'ip_api#index'
   root "locations#index"
 end

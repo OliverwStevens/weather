@@ -1,41 +1,40 @@
-<p style="color: green"><%= notice %></p>
+<% if notice %>
+  <div class="alert alert-success text-center">
+    <%= notice %>
+  </div>
+<% end %>
 
+<br>
+<div class="d-flex justify-content-center align-items-center">
+  <div class="p-4 mb-4 bg-secondary text-white rounded-3 shadow-lg" style="max-width: 800px;">
+    <div class="container-fluid py-4">
+      <%= render @location %>
 
- <div class="d-flex justify-content-center align-items-center">
-    <div class="p-5 mb-4 bg-secondary rounded-3">
-      <div class="container-fluid py-5 ">
-        <%= render @location %>
-        <div class="p-5 mb-4 bg-light rounded-3">
-
-          <h1 class="display-5 fw-bold text-center">This Week's Weather</h1>
-          <% if @highs.present? && @lows.present?%>
+      <div class="p-4 mb-4 bg-light text-dark rounded-3 shadow-sm">
+        <h1 class="display-5 fw-bold text-center mb-4">This Week's Weather</h1>
+        
+        <% if @highs.present? && @lows.present? %>
+          <div class="mb-4">
             <% @day_names.zip(@highs, @lows).each do |day, high, low| %>
-              <p>
+              <p class="mb-2">
                 <strong><%= day %>'s</strong> high is <%= high %>°F and its low is <%= low %>°F.
               </p>
-              
             <% end %>
-            
-            <br>
-            
-            <img src="<%= @chart_url %>" alt="Bar Chart">
+          </div>
 
-            <div>
-              <br>
-              <%= link_to "Edit this location", edit_location_path(@location) %> |
-              <%= link_to "Back to locations", locations_path %>
-              <br>
+          <div class="text-center mb-4">
+            <img src="<%= @chart_url %>" alt="Bar Chart" class="img-fluid rounded shadow-sm">
+          </div>
 
-              <%= button_to "Destroy this location", @location, method: :delete, class: "btn btn-danger" %>
-            </div>
-          <% else %>
-            There was some sort of error
-          <% end %>
+          
+
+        <% end %>
+        <div class="text-center">
+          <%= link_to "Edit Location", edit_location_path(@location), class: "btn btn-primary me-3 mb-3" %>
+          <%= link_to "Back to Locations", locations_path, class: "btn btn-secondary me-3 mb-3" %>
+          <%= button_to "Destroy Location", @location, method: :delete, class: "btn btn-danger" %>
         </div>
-       
-
-        
-
       </div>
     </div>
   </div>
+</div>
