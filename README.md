@@ -1,24 +1,45 @@
-# README
+# Multi-Location Weather Forecasting Application
+This application provides an easy and interactive way to track weather forecasts for multiple locations. Users can view, add, edit, or delete locations, with weather details like weekly highs and lows displayed visually using bar graphs.
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+# Features:
+1. A homepage with a list of locations.
+2. Create a new location with an ip address or zipcode.
+3. View the highs and lows of the week and visualize them on a bar graph.
+4. Edit or delete locations.
+5. Frontend support for API error handling.
+# Installation:
+**Clone the repository:**
 
-Things you may want to cover:
+    git clone https://github.com/oliverwstevens/weather.git
 
-* Ruby version
+**Change directory:**
 
-* System dependencies
+    cd weather
+**Install dependencies:**
 
-* Configuration
+    bundle install
+**Apply migrations:**
 
-* Database creation
+    rails db:migrate
+**Start the Rails server**
 
-* Database initialization
+    rails s
 
-* How to run the test suite
+**Open Browser and visit:**
 
-* Services (job queues, cache servers, search engines, etc.)
+    http://localhost:3000
+# How to Use:
 
-* Deployment instructions
-
-* ...
+1. Homepage:
+   Visit the homepage to see a list of all your locations.
+   Click on a location to view its weather details.
+2. View Weather Details:
+   Observe the high and low temperatures for the week.
+   Analyze the weather patterns using the bar graph.
+3. Add a Location:
+   Click the “New Location” button.
+   Enter a valid ZIP code or IP address and submit the form.
+   If the input is invalid, an error message will guide you to correct it.
+4. Edit or Remove a Location:
+   Select a location from the list.
+   Use the "Edit" button to modify its details or the "Remove" button to remove it.
