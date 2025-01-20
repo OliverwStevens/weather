@@ -46,8 +46,8 @@ This application provides an easy and interactive way to track weather forecasts
 # Running Tests with Rspec
 1. Set up database
 
-    rails db:setup –trace
+        rails db:setup –trace
 
-2. Run Location Model Validation Tests
+3. Run Location Model Validation Tests
 
-    rspec spec/models/location_spec.rb
+       rspec spec/models/location_spec.rb
