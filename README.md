@@ -43,3 +43,11 @@ This application provides an easy and interactive way to track weather forecasts
 4. Edit or Remove a Location:
    Select a location from the list.
    Use the "Edit" button to modify its details or the "Remove" button to remove it.
+# Running Tests with Rspec
+1. Set up database
+
+    rails db:setup –trace
+
+2. Run Location Model Validation Tests
+
+    rspec spec/models/location_spec.rb
