@@ -38,7 +38,9 @@ class LocationsController < ApplicationController
 
         day_names_str = @day_names.join('%7C')
 
-        @chart_url = "https://image-charts.com/chart?chbh=20&chbr=10&chco=E5446D%2C60B2E5&chd=t:#{highs_data}|#{lows_data}&chdl=Highs%7CLows&chdlp=r&chg=5&chs=700x300&cht=bvg&chtt=Temperature%20°F&chxl=0%3A%7C#{day_names_str}&chxt=x%2Cy"
+        #@chart_url = "https://image-charts.com/chart?chbh=20&chbr=10&chco=E5446D%2C60B2E5&chd=t:#{highs_data}|#{lows_data}&chdl=Highs%7CLows&chdlp=r&chg=5&chs=700x300&cht=bvg&chtt=Temperature%20°F&chxl=0%3A%7C#{day_names_str}&chxt=x%2Cy"
+
+        @chart_url = "https://image-charts.com/chart?chbh=20&chbr=5&chco=E5446D%2C60B2E5&chd=a:#{highs_data}|#{lows_data}&chdl=Highs%7CLows&chdlp=r&chg=5&chs=700x300&cht=bvg&chtt=Temperature%20°F&chxl=0%3A%7C#{day_names_str}&chxt=x%2Cy"
       end
     end
   end
