@@ -8,9 +8,11 @@ class WeatherService
   def fetch_weather_data
     fetch_lat_lng
     return unless @lat && @lng
-
-    forecast
+  
+    highs, lows = forecast
+    [highs, lows]
   end
+  
 
   private
 
@@ -23,7 +25,7 @@ class WeatherService
   end
 
   def get_lat_lng_from_ip
-    Rails.logger.debug("Called IP method, #{@location.ip_address}")
+    Rails.logger.info("Called IP method, #{@location.ip_address}")
     url = "https://ipapi.co/#{@location.ip_address}/json/"
     uri = URI(url)
     response = Net::HTTP.get(uri)
@@ -32,7 +34,7 @@ class WeatherService
   end
 
   def get_lat_lng_from_zipcode
-    Rails.logger.debug("Called Zipcode method, #{@location.zipcode}")
+    Rails.logger.info("Called Zipcode method, #{@location.zipcode}")
     url = "https://geocode.xyz/#{@location.zipcode}?json=1"
     uri = URI(url)
     response = Net::HTTP.get(uri)
@@ -46,7 +48,11 @@ class WeatherService
     response = Net::HTTP.get(uri)
     report = JSON.parse(response)
     return unless report["daily"].present?
-
-    [report["daily"]["temperature_2m_max"], report["daily"]["temperature_2m_min"]]
+  
+    [
+      report["daily"]["temperature_2m_max"],
+      report["daily"]["temperature_2m_min"]
+    ]
   end
+  
 end
