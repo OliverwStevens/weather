@@ -130,7 +130,6 @@ class LocationsController < ApplicationController
         response = Net::HTTP.get(uri)
         report = JSON.parse(response)
         if report["daily"].present?
-          puts @lat
           [report["daily"]["temperature_2m_max"], report["daily"]["temperature_2m_min"]]
         end
       end   
