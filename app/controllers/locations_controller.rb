@@ -9,37 +9,20 @@ class LocationsController < ApplicationController
   # GET /locations/1 or /locations/1.json
   def show
     @location = Location.find(params[:id])
+    weather_service = WeatherService.new(@location)
+    @highs, @lows = weather_service.fetch_weather_data
 
-    # Get the longitude and latitude
-    if @location.ip_address.present?
-      @lat, @lng = get_lat_lng_from_ip
-      Rails.logger.info "Latitude: #{@lat}, Longitude: #{@lng}"
-    elsif @location.zipcode.present?
-      @lat, @lng = get_lat_lng_from_zipcode
-      Rails.logger.info "Latitude: #{@lat}, Longitude: #{@lng}"
-    end
+    # If the data is present, proceed as usual
+    if @highs.present? && @lows.present?
+      highs_data = @highs.join(",")
+      lows_data = @lows.join(",")
 
-    if @lat.present? && @lng.present?
-      @highs, @lows = forecast
-      Rails.logger.info "Highs: #{@highs}, Lows: #{@lows}"
-      if @highs.present? && @lows.present?
-        highs_data = @highs.join(",")
-        lows_data = @lows.join(",")
+      require 'date'
+      today = Date.today
+      @day_names = ["Today"] + (1..6).map { |i| (today + i).strftime("%A") }
+      day_names_str = @day_names.join('%7C')
 
-        require 'date'
-
-        today = Date.today
-
-        @day_names = ["Today"]
-
-        (1..6).each do |i|
-          @day_names << (today + i).strftime("%A")
-        end
-
-        day_names_str = @day_names.join('%7C')
-
-        @chart_url = "https://image-charts.com/chart?chbh=20&chbr=5&chco=E5446D%2C60B2E5&chd=a:#{highs_data}|#{lows_data}&chdl=Highs%7CLows&chdlp=r&chg=5&chs=700x300&cht=bvg&chtt=Temperature%20°F&chxl=0%3A%7C#{day_names_str}&chxt=x%2Cy"
-      end
+      @chart_url = "https://image-charts.com/chart?chbh=20&chbr=5&chco=E5446D%2C60B2E5&chd=a:#{highs_data}|#{lows_data}&chdl=Highs%7CLows&chdlp=r&chg=5&chs=700x300&cht=bvg&chtt=Temperature%20°F&chxl=0%3A%7C#{day_names_str}&chxt=x%2Cy"
     end
   end
 
@@ -102,33 +85,5 @@ class LocationsController < ApplicationController
       params.expect(location: [ :zipcode, :ip_address ])
     end
 
-    def get_lat_lng_from_ip
-      Rails.logger.info "Called IP method, #{@location.ip_address}"
-      url = "https://ipapi.co/#{@location.ip_address}/json/"
-      uri = URI(url)
-      response = Net::HTTP.get(uri)
-      output = JSON.parse(response)
-      [output['latitude'], output['longitude']]
-    end
-
-    def get_lat_lng_from_zipcode
-      Rails.logger.info "Called Zipcode method, #{@location.zipcode}"
-      url = "https://geocode.xyz/#{@location.zipcode}?json=1"
-      uri = URI(url)
-      response = Net::HTTP.get(uri)
-      output = JSON.parse(response)
-      [output['latt'], output['longt']]
-    end
-
-    def forecast
-      if @lat.present? && @lng.present?
-        url = "https://api.open-meteo.com/v1/forecast?latitude=#{@lat}&longitude=#{@lng}&daily=temperature_2m_max,temperature_2m_min&temperature_unit=fahrenheit&wind_speed_unit=mph&precipitation_unit=inch"
-        uri = URI(url)
-        response = Net::HTTP.get(uri)
-        report = JSON.parse(response)
-        if report["daily"].present?
-          [report["daily"]["temperature_2m_max"], report["daily"]["temperature_2m_min"]]
-        end
-      end   
-    end   
+   
 end
