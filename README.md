@@ -25,7 +25,7 @@ This application provides an easy and interactive way to track weather forecasts
 
     rails s
 
-**Open Browser and visit:**
+**Open browser and visit:**
 
     http://localhost:3000
 # How to Use:
@@ -48,14 +48,14 @@ This application provides an easy and interactive way to track weather forecasts
 
         rails db:setup –trace
 
-3. To Run Only Location Model Validation Tests:
+3. To run only location model validation tests:
 
        rspec spec/models/location_spec.rb
 
-4. To Run Only System Tests:
+4. To run only system tests:
 
         rspec spec/system
    
-5. To Run All Tests
+5. To run all tests
 
        rspec spec
