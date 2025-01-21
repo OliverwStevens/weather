@@ -48,6 +48,14 @@ This application provides an easy and interactive way to track weather forecasts
 
         rails db:setup –trace
 
-3. Run Location Model Validation Tests
+3. To Run Only Location Model Validation Tests:
 
        rspec spec/models/location_spec.rb
+
+4. To Run Only System Tests:
+
+        rspec spec/system
+   
+5. To Run All Tests
+
+       rspec spec
