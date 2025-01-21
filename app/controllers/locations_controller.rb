@@ -10,18 +10,18 @@ class LocationsController < ApplicationController
   def show
     @location = Location.find(params[:id])
 
-    #Get the longitude and lattitude
+    # Get the longitude and latitude
     if @location.ip_address.present?
       @lat, @lng = get_lat_lng_from_ip
-      puts "Lattitude: #{@lat}, Longitude: #{@lng}"
+      Rails.logger.info "Latitude: #{@lat}, Longitude: #{@lng}"
     elsif @location.zipcode.present?
       @lat, @lng = get_lat_lng_from_zipcode
-      puts "Lattitude: #{@lat}, Longitude: #{@lng}"
+      Rails.logger.info "Latitude: #{@lat}, Longitude: #{@lng}"
     end
 
     if @lat.present? && @lng.present?
       @highs, @lows = forecast
-      puts "Highs: #{@highs} Lows: #{@lows}"
+      Rails.logger.info "Highs: #{@highs}, Lows: #{@lows}"
       if @highs.present? && @lows.present?
         highs_data = @highs.join(",")
         lows_data = @lows.join(",")
@@ -37,8 +37,6 @@ class LocationsController < ApplicationController
         end
 
         day_names_str = @day_names.join('%7C')
-
-        #@chart_url = "https://image-charts.com/chart?chbh=20&chbr=10&chco=E5446D%2C60B2E5&chd=t:#{highs_data}|#{lows_data}&chdl=Highs%7CLows&chdlp=r&chg=5&chs=700x300&cht=bvg&chtt=Temperature%20°F&chxl=0%3A%7C#{day_names_str}&chxt=x%2Cy"
 
         @chart_url = "https://image-charts.com/chart?chbh=20&chbr=5&chco=E5446D%2C60B2E5&chd=a:#{highs_data}|#{lows_data}&chdl=Highs%7CLows&chdlp=r&chg=5&chs=700x300&cht=bvg&chtt=Temperature%20°F&chxl=0%3A%7C#{day_names_str}&chxt=x%2Cy"
       end
@@ -93,6 +91,7 @@ class LocationsController < ApplicationController
   end
 
   private
+
     # Use callbacks to share common setup or constraints between actions.
     def set_location
       @location = Location.find(params.expect(:id))
@@ -103,19 +102,17 @@ class LocationsController < ApplicationController
       params.expect(location: [ :zipcode, :ip_address ])
     end
 
-
     def get_lat_lng_from_ip
-      puts "Called IP method, #{@location.ip_address}"
+      Rails.logger.info "Called IP method, #{@location.ip_address}"
       url = "https://ipapi.co/#{@location.ip_address}/json/"
       uri = URI(url)
       response = Net::HTTP.get(uri)
       output = JSON.parse(response)
       [output['latitude'], output['longitude']]
     end
-  
-  
+
     def get_lat_lng_from_zipcode
-      puts "Called Zipcode method, #{@location.zipcode}"
+      Rails.logger.info "Called Zipcode method, #{@location.zipcode}"
       url = "https://geocode.xyz/#{@location.zipcode}?json=1"
       uri = URI(url)
       response = Net::HTTP.get(uri)
