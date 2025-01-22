@@ -17,7 +17,6 @@ class LocationsController < ApplicationController
       highs_data = @highs.join(",")
       lows_data = @lows.join(",")
 
-      require 'date'
       today = Date.today
       @day_names = ["Today"] + (1..6).map { |i| (today + i).strftime("%A") }
       day_names_str = @day_names.join('%7C')
