@@ -67,6 +67,6 @@ group :test do
   gem "selenium-webdriver"
 end
 
-gem "json", "~> 2.9"
+gem "json", "~> 2.10"
 
 gem "net-http", "~> 0.6.0"
